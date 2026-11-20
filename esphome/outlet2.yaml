@@ -1,0 +1,29 @@
+esphome:
+  name: outlet2
+  friendly_name: outlet2
+
+esp8266:
+  board: esp01_1m
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret outlet2_api_key
+
+ota:
+  password: !secret outlet2_ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Outlet2 Fallback Hotspot"
+    password: !secret outlet2_ap_password
+
+captive_portal:
+    

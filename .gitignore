@@ -11,7 +11,8 @@ zigbee2mqtt/coordinator_backup.json
 zigbee2mqtt/database.db*
 zigbee2mqtt/state.json
 zigbee2mqtt/configuration_backup_*.yaml
-esphome/
+esphome/.device-builder*
+esphome/.esphome/
 
 # Databases, logs, runtime files
 *.db
