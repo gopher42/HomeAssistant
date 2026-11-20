@@ -17,7 +17,6 @@ A sanitized snapshot of the `/config` directory, taken from the full backup
 | `blueprints/` | Automation, script and template blueprints |
 | `themes/` | Mushroom themes |
 | `dashboards/` | UI dashboards exported from `.storage/lovelace.*` as YAML (reference copies) |
-| `esphome/` | ESPHome device configs; secrets listed in `esphome/secrets.example.yaml` |
 | `zigbee2mqtt/configuration.yaml` | Zigbee2MQTT config (ConBee II); MQTT password lives in Z2M's `secret.yaml` |
 
 ## Deliberately excluded
@@ -25,12 +24,6 @@ A sanitized snapshot of the `/config` directory, taken from the full backup
 `secrets.yaml`, `.storage/` (auth tokens, integration credentials, entity and device registries),
 `home-assistant_v2.db` (history), Lutron Caseta certificates and keys (`*.pem`), the Zigbee coordinator
 backup (contains the network key), logs, `custom_components/` and `www/community/` (reinstall through HACS).
-
-## Restoring the ESPHome configs
-
-The ESPHome files reference these secrets. Add any that are missing to `esphome/secrets.yaml`
-on the host, taking the values from the device's current config, before you compile:
-see `esphome/secrets.example.yaml`.
 
 ## Not in this repo, for reference
 
