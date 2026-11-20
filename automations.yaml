@@ -516,24 +516,6 @@
     target:
       entity_id: switch.sonoff_1001801437_1
   mode: queued
-- id: hepa_filter_with_furnace
-  alias: HEPA Filter With Furnace
-  description: Run the HEPA filter whenever the furnace draws power (Sense furnace sensor).
-  triggers:
-  - trigger: numeric_state
-    entity_id: sensor.furnace_usage
-    above: 10
-    id: 'on'
-  - trigger: numeric_state
-    entity_id: sensor.furnace_usage
-    below: 9
-    id: 'off'
-  conditions: []
-  actions:
-  - action: switch.turn_{{ trigger.id }}
-    target:
-      entity_id: switch.hepa_air_filter
-  mode: queued
 - id: master_bedroom_remote
   alias: Master Bedroom Remote
   description: Hue dimmer "Master Remote" - On toggles the master lamps, Off turns them off (Zigbee2MQTT 2.x action via MQTT).
