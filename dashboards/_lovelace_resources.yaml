@@ -1,0 +1,7 @@
+items:
+- url: /local/community/lovelace-mushroom/mushroom.js?v=444350375-v5.3.0
+  type: module
+  id: 098af0f8776947d4911ede9c77e6debf
+- url: /local/community/mini-graph-card/mini-graph-card-bundle.js?v=1512800620130
+  type: module
+  id: 7317a2c73ec94893823c954e595ef1bd

@@ -1,0 +1,282 @@
+# UI dashboard 'lovelace' exported from .storage/lovelace.lovelace
+# (read-only reference; paste into the dashboard's Raw configuration editor to restore)
+title: Edina
+views:
+- path: default_view
+  cards:
+  - type: horizontal-stack
+    cards:
+    - type: custom:mushroom-light-card
+      entity: light.kitchen_main_lights
+      layout: vertical
+      name: Kitchen Main
+      fill_container: true
+      icon: mdi:light-recessed
+      show_color_control: false
+      show_brightness_control: false
+      collapsible_controls: false
+      secondary_info: none
+    - type: custom:mushroom-light-card
+      entity: light.kitchen_island_pendants
+      name: Island
+      icon: mdi:lightbulb
+      fill_container: true
+      show_brightness_control: false
+      collapsible_controls: false
+      layout: vertical
+      secondary_info: none
+    - type: custom:mushroom-light-card
+      entity: light.kitchen_toe_kick
+      name: Toe Kick
+      icon: mdi:led-strip-variant
+      fill_container: true
+      collapsible_controls: false
+      show_brightness_control: false
+      layout: vertical
+      secondary_info: none
+  - type: horizontal-stack
+    cards:
+    - type: custom:mushroom-light-card
+      entity: light.master_bedroom_main_lights
+      layout: vertical
+      name: Master Bed
+      fill_container: true
+      icon: mdi:light-recessed
+      show_color_control: false
+      show_brightness_control: false
+      collapsible_controls: false
+      secondary_info: none
+    - type: custom:mushroom-light-card
+      entity: light.master_lamps
+      name: Lamps
+      icon: mdi:lamps
+      fill_container: true
+      show_brightness_control: false
+      collapsible_controls: false
+      layout: vertical
+      secondary_info: none
+    - type: custom:mushroom-light-card
+      entity: light.master_bathroom_channel_1
+      name: Bathroom
+      icon: mdi:led-strip-variant
+      fill_container: true
+      collapsible_controls: false
+      show_brightness_control: false
+      layout: vertical
+      secondary_info: none
+  - type: horizontal-stack
+    cards:
+    - type: custom:mushroom-light-card
+      entity: light.living_room_main_lights
+      layout: vertical
+      name: Living Main
+      fill_container: true
+      icon: mdi:light-recessed
+      show_color_control: false
+      show_brightness_control: false
+      collapsible_controls: false
+      secondary_info: none
+    - type: custom:mushroom-light-card
+      entity: light.linkind_smart_light_bulb_2
+      name: Lamp
+      icon: mdi:lamp
+      fill_container: true
+      show_brightness_control: false
+      collapsible_controls: false
+      layout: vertical
+      secondary_info: none
+    - type: custom:mushroom-light-card
+      entity: light.dining_room_chandelier
+      name: Dining
+      icon: mdi:chandelier
+      fill_container: true
+      collapsible_controls: false
+      show_brightness_control: false
+      layout: vertical
+      secondary_info: none
+  - type: horizontal-stack
+    cards:
+    - type: custom:mushroom-entity-card
+      entity: light.h6056
+      name: Desk Light
+      layout: vertical
+      fill_container: true
+      secondary_info: none
+      primary_info: name
+      icon_color: orange
+      tap_action:
+        action: toggle
+    - type: custom:mushroom-light-card
+      layout: vertical
+      fill_container: true
+      icon: mdi:floor-lamp
+      show_color_control: false
+      show_brightness_control: false
+      collapsible_controls: false
+      secondary_info: none
+      primary_info: name
+      entity: light.johns_lamp
+      name: John Lamp
+    - type: custom:mushroom-light-card
+      layout: vertical
+      fill_container: true
+      icon: mdi:floor-lamp
+      show_color_control: false
+      show_brightness_control: false
+      collapsible_controls: false
+      secondary_info: none
+      primary_info: name
+      entity: light.anikas_lamp
+      name: Anika Lamp
+  - type: horizontal-stack
+    cards:
+    - type: custom:mushroom-light-card
+      entity: light.family_room_main_lights
+      layout: vertical
+      name: Family Main
+      fill_container: true
+      icon: mdi:light-recessed
+      show_color_control: false
+      show_brightness_control: false
+      collapsible_controls: false
+      secondary_info: none
+    - type: custom:mushroom-light-card
+      entity: light.linkind_smart_light_bulb
+      name: Lamp
+      icon: mdi:lamp
+      fill_container: true
+      show_brightness_control: false
+      collapsible_controls: false
+      layout: vertical
+      secondary_info: none
+    - type: custom:mushroom-light-card
+      entity: light.front_foyer_main_lights
+      name: Entry
+      icon: mdi:light-recessed
+      fill_container: true
+      collapsible_controls: false
+      show_brightness_control: false
+      layout: vertical
+      secondary_info: none
+  - type: horizontal-stack
+    cards:
+    - type: custom:mushroom-light-card
+      entity: light.exterior_recessed
+      layout: vertical
+      name: Ex Recessed
+      fill_container: true
+      icon: mdi:light-recessed
+      show_color_control: false
+      show_brightness_control: false
+      collapsible_controls: false
+      secondary_info: none
+      primary_info: name
+    - type: custom:mushroom-light-card
+      entity: light.exterior_driveway_light
+      name: Driveway
+      icon: mdi:lightbulb
+      fill_container: true
+      show_brightness_control: false
+      collapsible_controls: false
+      layout: vertical
+      secondary_info: none
+    - type: custom:mushroom-entity-card
+      entity: switch.exterior_back_light
+      layout: vertical
+      name: Back Yard
+      secondary_info: none
+      tap_action:
+        action: toggle
+  - type: horizontal-stack
+    cards:
+    - type: custom:mushroom-light-card
+      entity: light.basement_sitting_area_living_room_recessed
+      layout: vertical
+      name: Bsmnt Main
+      fill_container: true
+      icon: mdi:light-recessed
+      show_color_control: false
+      show_brightness_control: false
+      collapsible_controls: false
+      secondary_info: none
+      primary_info: name
+    - type: custom:mushroom-entity-card
+      entity: light.basement_sitting_area_stair_light
+      layout: vertical
+      fill_container: true
+      secondary_info: none
+      primary_info: name
+      icon_color: orange
+      tap_action:
+        action: toggle
+      name: 'Basement Strs '
+    - type: custom:mushroom-cover-card
+      entity: cover.garage_door
+      layout: vertical
+      secondary_info: none
+  type: masonry
+  icon: mdi:home
+- type: sections
+  max_columns: 4
+  path: cameras
+  sections:
+  - type: grid
+    cards:
+    - type: heading
+      heading_style: title
+    - type: picture-entity
+      entity: camera.fys_sub
+      camera_image: camera.fys_sub
+    - type: picture-entity
+      entity: camera.front_door_fluent
+      camera_image: camera.front_door_fluent
+    - type: picture-entity
+      entity: camera.bys_fluent
+      camera_image: camera.bys_fluent
+    - type: picture-entity
+      entity: camera.byn_fluent
+      camera_image: camera.byn_fluent
+    - type: picture-entity
+      entity: camera.fyn_sub_2
+      camera_image: camera.fyn_sub_2
+  icon: mdi:cctv
+  cards: []
+- type: sections
+  title: Christmas
+  path: christmas
+  icon: mdi:pine-tree
+  sections:
+  - type: grid
+    cards:
+    - type: tile
+      entity: switch.sonoff_1001801ad9_1
+      icon: mdi:pine-tree
+      vertical: false
+      tap_action:
+        action: toggle
+      features_position: bottom
+    - type: tile
+      entity: switch.sonoff_100180249b_1
+      icon: mdi:string-lights
+      vertical: false
+      features_position: bottom
+    - type: tile
+      entity: switch.living_room_christmas_tree
+  cards:
+  - type: entities
+    entities:
+    - entity: light.wled_digquad_main
+      name: Main
+    - entity: select.wled_digquad_playlist
+      name: Playlist
+    - entity: select.wled_digquad_preset
+      name: Preset
+    - entity: light.wled_digquad_segment_1
+      name: Segment 1
+    - light.wled_digquad
+    title: WLED_DigQuad
+  header:
+    card:
+      type: markdown
+      text_only: true
+      content: Christmas

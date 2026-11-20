@@ -1,0 +1,22 @@
+items:
+- show_in_sidebar: true
+  icon: mdi:mushroom
+  title: Mushroom
+  require_admin: false
+  mode: storage
+  url_path: lovelace-mushroom
+  id: lovelace_mushroom
+- id: map
+  icon: mdi:map
+  title: Map
+  url_path: map
+  mode: storage
+  show_in_sidebar: true
+  require_admin: false
+- id: lovelace
+  icon: mdi:view-dashboard
+  title: Overview
+  url_path: lovelace
+  show_in_sidebar: true
+  require_admin: false
+  mode: storage

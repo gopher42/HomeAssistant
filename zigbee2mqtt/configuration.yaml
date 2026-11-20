@@ -1,0 +1,56 @@
+homeassistant:
+  enabled: true
+mqtt:
+  server: mqtt://core-mosquitto:1883
+  user: addons
+  password: '!secret password'
+serial:
+  port: >-
+    /dev/serial/by-id/usb-dresden_elektronik_ingenieurtechnik_GmbH_ConBee_II_DE2191001-if00
+  adapter: deconz
+frontend:
+  enabled: true
+  port: 8099
+devices:
+  '0x00158d0002329a1e':
+    friendly_name: Sliding Door
+  '0x00158d000236ece3':
+    friendly_name: Garage Door
+  '0x00158d00025185d9':
+    friendly_name: Front Door
+  '0x00158d0004aae9a9':
+    friendly_name: Family Room
+  '0x00158d00053e0023':
+    friendly_name: Basement
+  '0x00158d0002a524cd':
+    friendly_name: Basement Door
+  '0x00158d0002901765':
+    friendly_name: Johns Lamp Switch
+    legacy: false
+  '0x00158d000253ea2b':
+    friendly_name: Kitchen Motion
+  '0x00158d00054c252d':
+    friendly_name: Upstairs
+    temperature_calibration: ''
+    temperature_precision: ''
+  '0x0000000000402697':
+    friendly_name: Tap
+  '0x00158d0002751f1d':
+    friendly_name: Entryway Motion
+    no_occupancy_since: []
+    occupancy_timeout: 120
+    device_temperature_precision: 0
+  '0x00158d0007e5d2ce':
+    friendly_name: Master Bathroom
+  '0x00158d0002735686':
+    friendly_name: Guest Bath
+  '0x54ef4410004d7a57':
+    friendly_name: Family Room Motion
+  '0x00178801086e0cb2':
+    friendly_name: Master Remote
+    legacy: false
+  '0x54ef4410004d8e4e':
+    friendly_name: Desk Motion
+advanced:
+  log_level: error
+version: 5

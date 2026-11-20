@@ -1,0 +1,929 @@
+- id: '1545193663546'
+  alias: Turn On Outside Lights 5 Minutes Before Sunset
+  description: ''
+  triggers:
+  - event: sunset
+    offset: -00:05:00
+    trigger: sun
+  conditions: []
+  actions:
+  - data:
+      brightness: 30
+    target:
+      entity_id: light.exterior_recessed
+    enabled: true
+    action: light.turn_on
+  - data: {}
+    target:
+      entity_id: light.exterior_driveway_light
+    action: light.turn_on
+  mode: single
+- id: '1551412805055'
+  alias: Garage Door Action
+  trigger:
+  - event_data:
+      actionName: CLOSEGARAGE
+    event_type: ios.notification_action_fired
+    platform: event
+  condition:
+  - condition: state
+    entity_id: cover.garage_door
+    state: open
+  action:
+  - entity_id: cover.garage_door
+    service: cover.close_cover
+  initial_state: true
+- id: '1555647819215'
+  alias: Garage Door Notification for 15 minutes
+  trigger:
+  - entity_id:
+    - cover.garage_door
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+    platform: state
+    to: open
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      message: Garage Door has been left open for 15 minutes
+      title: Garage Door Open!
+- id: '1558404317107'
+  alias: Living Room Lamp Random Turn On
+  triggers:
+  - event: sunset
+    offset: -00:45:00
+    trigger: sun
+  conditions: []
+  actions:
+  - delay: 00:{{ range(0,59) | random | int }}:{{ range(0,59) | random | int }}
+  - data: {}
+    action: light.turn_on
+    target:
+      entity_id: light.linkind_smart_light_bulb_2
+- id: '1558404217102'
+  alias: Living Room Lamp Random Turn Off
+  triggers:
+  - at: '23:00:00'
+    trigger: time
+  conditions: []
+  actions:
+  - delay: 00:{{ range(0,59) | random | int }}:{{ range(0,59) | random | int }}
+  - data: {}
+    target:
+      entity_id:
+      - light.linkind_smart_light_bulb_2
+    action: light.turn_off
+- id: '1565684208376'
+  alias: Vacation Mode Family Room Light
+  trigger:
+  - event: sunrise
+    platform: sun
+  condition:
+  - condition: state
+    entity_id: input_boolean.vacation_mode
+    state: 'on'
+  action:
+  - delay: 00:{{ range(0,59) | random | int }}:{{ range(0,59) | random | int }}
+  - data:
+      entity_id: light.family_room_light
+    service: light.turn_on
+- id: '1566434907252'
+  alias: Garage Door Light Turn On With Garage Door
+  trigger:
+  - entity_id:
+    - cover.cover_group
+    platform: state
+    to: opening
+  - entity_id:
+    - cover.cover_group
+    platform: state
+    to: open
+  condition: []
+  action:
+  - data: {}
+    service: switch.turn_on
+    target:
+      entity_id: switch.garage_light
+  mode: single
+- id: '1566438090289'
+  alias: Garage Door Light Turn Off With Garage Door
+  trigger:
+  - entity_id:
+    - cover.cover_group
+    platform: state
+    to: closed
+  condition:
+  - condition: state
+    entity_id: switch.garage_light
+    state: 'on'
+  action:
+  - data:
+      entity_id: switch.garage_light
+    service: switch.turn_off
+  mode: single
+- id: '1570502932172'
+  alias: Vacation Mode Garage Door Notification
+  trigger:
+  - entity_id:
+    - binary_sensor.garage_door_contact
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    from: closed
+    platform: state
+    to: open
+  condition:
+  - condition: state
+    entity_id: input_boolean.vacation_mode
+    state: 'on'
+  action:
+  - data:
+      message: Garage Door Opened
+    service: notify.notify
+  mode: single
+- id: '1578327890921'
+  alias: Garage Door Bench Turn On
+  description: ''
+  trigger:
+  - entity_id: switch.garage_light
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - entity_id: switch.outlet2_relay
+    service: switch.turn_on
+  mode: single
+- id: '1578327951063'
+  alias: Garage Door Bench Turn Off
+  description: ''
+  trigger:
+  - entity_id: switch.garage_light
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - entity_id: switch.outlet2_relay
+    service: switch.turn_off
+  mode: single
+- id: '1591845931985'
+  alias: Front Door Open
+  description: ''
+  trigger:
+  - entity_id:
+    - binary_sensor.front_door_contact
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.vacation_mode
+    state: 'on'
+  action:
+  - data:
+      message: The Front Door opened. Check it out!
+      title: Front Door is Open
+    service: notify.mobile_app_sams_iphone
+- id: '1591846522858'
+  alias: Garage Door Open Notification Vacation Mode
+  description: ''
+  trigger:
+  - entity_id: cover.garage_door
+    from: closed
+    platform: state
+    to: open
+  condition:
+  - condition: state
+    entity_id: input_boolean.vacation_mode
+    state: 'on'
+  action:
+  - data:
+      message: Garage Door is open. Check it out!
+      title: Garage Door Open
+    service: notify.mobile_app_sams_iphone
+- id: '1591846522898'
+  alias: Vacation Mode Back Door Open
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.vibration_10
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.vacation_mode
+    state: 'on'
+  action:
+  - data:
+      message: Back Door is open. Check it out!
+      title: Back Door Open
+    service: notify.mobile_app_sams_iphone
+  mode: single
+- id: '1591846522899'
+  alias: Vacation Mode Spare Bedroom Door Open
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.vibration_16
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.vacation_mode
+    state: 'on'
+  action:
+  - data:
+      message: Spare Bedroom Door is open. Check it out!
+      title: Spare Bedroom Door Open
+    service: notify.mobile_app_sams_iphone
+- id: '1595452832122'
+  alias: Garage Door Light Turn On With Motion
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.garage_motion
+    platform: state
+    to: 'on'
+    from: 'off'
+  condition: []
+  action:
+  - data: {}
+    entity_id: switch.garage_light
+    service: switch.turn_on
+  mode: single
+- id: '1595452887958'
+  alias: Garage Door Light Turn Off With Motion
+  description: ''
+  trigger:
+  - entity_id:
+    - binary_sensor.garage_motion
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data: {}
+    entity_id: switch.garage_light
+    service: switch.turn_off
+  mode: single
+- id: '1595453241047'
+  alias: Kitchen Main Lighting Turn Off
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.kitchen_motion_occupancy
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+    from:
+    - 'on'
+    to:
+    - 'off'
+    trigger: state
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: 6781d65465cf59b755ee99aa45978c38
+    entity_id: 998bd13a8ebd142bbbe117617550ff70
+    domain: light
+  - metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.kitchen_toe_kick
+      - light.wine_rack_lights
+      - light.kitchen_cooktop_toe_kick
+      - light.under_sink_toe_kick
+      - light.pantry_toe_kick
+    action: light.turn_off
+  - action: switch.turn_off
+    target:
+      entity_id:
+      - switch.living_room_christmas_tree
+    data: {}
+  mode: single
+- id: '1597856032293'
+  alias: Vacation Mode Kitchen Motion
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.kitchen_motion_sensor
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.vacation_mode
+    state: 'on'
+  action:
+  - data:
+      message: Motion in the kitchen! Check the cameras!
+      title: Kitchen Motion Detected
+    service: notify.mobile_app_sams_iphone
+  mode: single
+- id: '1597875088361'
+  alias: Vacation Mode Entry Motion
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.presence_9
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.vacation_mode
+    state: 'on'
+  action:
+  - data:
+      message: Motion is detected in the front Entry. Check the cameras out!
+      title: Front Entry Motion
+    service: notify.mobile_app_sams_iphone
+  mode: single
+- id: '1602787951254'
+  alias: Hepa Filter Turn On
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.furnace_power
+    above: '10'
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.hepa_air_filter
+  mode: single
+- id: '1602787987552'
+  alias: Hepa Filter Turn Off
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.furnace_power
+    below: '9'
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.hepa_air_filter
+  mode: single
+- id: '1609023351759'
+  alias: Turn Off Outside Lights At Sunrise
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunrise
+  condition: []
+  action:
+  - data: {}
+    service: light.turn_off
+    target:
+      entity_id:
+      - light.exterior_recessed
+      - light.exterior_driveway_light
+  mode: single
+- id: '1612233730715'
+  alias: Guest Bathroom Lighting Turn On
+  description: ''
+  trigger:
+  - entity_id:
+    - binary_sensor.guest_bath_occupancy
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - service: light.turn_on
+    data: {}
+    entity_id: light.guest_bathroom
+  mode: single
+- id: '1612233789098'
+  alias: Guest Bathroom Lighting Turn Off
+  description: ''
+  trigger:
+  - entity_id:
+    - binary_sensor.guest_bath_occupancy
+    platform: state
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    entity_id: light.guest_bathroom
+  mode: single
+- id: '1650762994195'
+  alias: Master Bathroom Lighting Turn On
+  description: ''
+  trigger:
+  - entity_id:
+    - binary_sensor.master_bathroom_occupancy
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness_pct: 100
+    target:
+      entity_id: light.master_bathroom_channel_1
+  mode: single
+- id: '1650763237686'
+  alias: Master Bathroom Lighting Turn Off
+  description: ''
+  trigger:
+  - entity_id:
+    - binary_sensor.master_bathroom_occupancy
+    platform: state
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+  condition: []
+  action:
+  - service: light.turn_off
+    data:
+      transition: 15
+    target:
+      entity_id: light.master_bathroom_channel_1
+  mode: single
+- id: '1656303017560'
+  alias: Master Bedroom Remote On Short
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.master_remote_action
+    to: on_press
+  condition: []
+  action:
+  - service: light.toggle
+    data: {}
+    target:
+      entity_id: light.master_lamps
+  mode: single
+- id: '1656303082058'
+  alias: Master Bedroom Remote Off
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.master_remote_action
+    to: off_press
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.master_lamps
+  mode: single
+- id: '1656339706579'
+  alias: Kitchen Main Lighting Turn On
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.kitchen_motion_occupancy
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    from:
+    - 'off'
+    to:
+    - 'on'
+    trigger: state
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: time
+        after: '21:00:00'
+        before: 05:00:00
+        weekday:
+        - sun
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
+      sequence:
+      - data:
+          rgbw_color:
+          - 255
+          - 255
+          - 0
+          - 255
+        target:
+          entity_id:
+          - light.wine_rack_lights
+          - light.pantry_toe_kick
+          - light.under_sink_toe_kick
+          - light.kitchen_cooktop
+        action: light.turn_on
+    - conditions:
+      - condition: time
+        after: 05:00:00
+        before: '21:00:00'
+        weekday:
+        - sun
+        - mon
+        - wed
+        - tue
+        - thu
+        - sat
+        - fri
+      sequence:
+      - data: {}
+        target:
+          entity_id: light.kitchen_main_lights
+        action: light.turn_on
+      - data:
+          rgbw_color:
+          - 255
+          - 255
+          - 0
+          - 255
+        target:
+          entity_id:
+          - light.wine_rack_lights
+          - light.pantry_toe_kick
+          - light.under_sink_toe_kick
+          - light.kitchen_cooktop
+        action: light.turn_on
+        enabled: false
+    default: []
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.living_room_christmas_tree
+  mode: single
+- id: '1656855199409'
+  alias: Garage Door Notification for 30 minutes
+  description: ''
+  trigger:
+  - entity_id:
+    - cover.garage_door
+    for:
+      hours: 0
+      minutes: 30
+      seconds: 0
+    platform: state
+    to: open
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      message: Garage Door has been left open for 30 minutes
+      title: Garage Door Open!
+  mode: single
+- id: '1656855219740'
+  alias: Garage Door Notification for 10 minutes
+  description: ''
+  triggers:
+  - entity_id:
+    - cover.garage_door
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    to:
+    - open
+    trigger: state
+  conditions: []
+  actions:
+  - data:
+      message: Garage Door has been left open for 10 minutes
+      title: Garage Door Open!
+    action: notify.notify
+  mode: single
+- id: '1658106783671'
+  alias: Entry Light Motion
+  description: ''
+  use_blueprint:
+    path: homeassistant/motion_light.yaml
+    input:
+      motion_entity: binary_sensor.entryway_motion_occupancy
+      light_target:
+        entity_id: light.front_foyer_main_lights
+- id: '1665972347275'
+  alias: Christmas Turn On
+  description: ''
+  triggers:
+  - event: sunset
+    offset: 0
+    trigger: sun
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 92ae3af1e248ece239ddc8e803c11825
+    entity_id: edb70735ee3afccc56c987d668345e40
+    domain: switch
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - data: {}
+    target:
+      entity_id: light.wled_digquad_main
+    action: light.turn_on
+  mode: single
+- id: '1671729357841'
+  alias: Front Door Person Lights
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - light.wine_rack_lights
+    - light.kitchen_cooktop_toe_kick
+    - light.under_sink_toe_kick
+    - light.pantry_toe_kick
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.wine_rack_lights
+      - light.kitchen_cooktop_toe_kick
+      - light.pantry_toe_kick
+      - light.under_sink_toe_kick
+  mode: single
+- id: '1680921871271'
+  alias: Johns Lamp Toggle
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.johns_lamp_switch_action
+    to: single
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    attribute: action
+  condition: []
+  action:
+  - service: switch.toggle
+    data: {}
+    target:
+      entity_id: switch.johnslamp
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
+  mode: single
+- id: '1681247765513'
+  alias: Watch Garage Action
+  description: ''
+  trigger:
+  - platform: event
+    event_type: ios.action_fired
+    event_data:
+      actionName: Garage
+    context:
+      user_id:
+      - 18468e18890f46bdbfdba815d1c50af4
+  condition: []
+  action:
+  - service: cover.toggle
+    data: {}
+    target:
+      entity_id: cover.cover_group
+  mode: single
+- id: '1681866006754'
+  alias: Johns Room 7:00 PM
+  description: ''
+  triggers:
+  - at: '19:00:00'
+    trigger: time
+  conditions: []
+  actions:
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.master_lamps
+      - light.anikas_lamp
+      - light.johns_lamp
+    data: {}
+  mode: single
+- id: '1682988396775'
+  alias: Exterior Turn off at 11 PM
+  description: ''
+  triggers:
+  - at: '23:00:00'
+    trigger: time
+  conditions: []
+  actions:
+  - data: {}
+    target:
+      entity_id:
+      - light.exterior_driveway_light
+    action: light.turn_off
+  - action: switch.turn_off
+    target:
+      entity_id: switch.sonoff_100180249b_1
+    data: {}
+  mode: single
+- id: '1690930372304'
+  alias: Attic fans
+  description: ''
+  trigger:
+  - platform: time
+    at: '14:00:00'
+  - platform: time
+    at: '15:00:00'
+  - platform: time
+    at: '18:00:00'
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id:
+      - switch.shelly1_8caab5c51075
+      - switch.bedroom_attic_fan
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.shelly1_8caab5c51075
+      - switch.bedroom_attic_fan
+  mode: single
+- id: '1700868756973'
+  alias: Christmas Turn Off
+  description: ''
+  triggers:
+  - at: '22:00:00'
+    trigger: time
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: 92ae3af1e248ece239ddc8e803c11825
+    entity_id: edb70735ee3afccc56c987d668345e40
+    domain: switch
+  - type: turn_off
+    device_id: ad9019d416c9fce0190eefa26820a8be
+    entity_id: 0688133fa0f555adbf6f1268ed5f2e0d
+    domain: switch
+  - type: turn_off
+    device_id: 805f582bc0f77b71289c9a61b0820bb7
+    entity_id: d375ff4fe54961c454065a06c4581c66
+    domain: switch
+  - data:
+      brightness_pct: 15
+    target:
+      entity_id: light.exterior_recessed
+    action: light.turn_on
+  - data: {}
+    action: light.turn_off
+  - data: {}
+    target:
+      entity_id: light.wled_digquad_main
+    action: light.turn_off
+  mode: single
+- id: '1725287204135'
+  alias: Johns lights turn off
+  description: ''
+  triggers:
+  - at: 07:30:00
+    trigger: time
+  conditions: []
+  actions:
+  - action: media_player.media_pause
+    target:
+      entity_id:
+      - media_player.master_bedroom
+    data: {}
+  - action: switch.turn_off
+    target:
+      entity_id:
+      - switch.johnslamp
+    data: {}
+  - action: light.turn_off
+    target:
+      entity_id:
+      - light.master_lamps
+      - light.anikas_lamp
+      - light.johns_lamp
+    data: {}
+  mode: single
+- id: '1732805450573'
+  alias: Family Room Christmas Tree On
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.family_room_motion_presence
+    to: 'on'
+  conditions: []
+  actions:
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.sonoff_1001801437_1
+  mode: single
+- id: '1732805538117'
+  alias: Family Room Tree Off
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.family_room_motion_presence
+    to: 'off'
+    for:
+      hours: 2
+      minutes: 0
+      seconds: 0
+  conditions: []
+  actions:
+  - action: switch.turn_off
+    target:
+      entity_id:
+      - switch.sonoff_1001801437_1
+    data: {}
+  mode: single
+- id: '1735103839365'
+  alias: Magic Band John
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.magicband_rc522_rfid_tag
+    to: 'on'
+  conditions: []
+  actions:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
+  - action: light.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.john_s_lamp
+  mode: single
+- id: '1766002522871'
+  alias: Desk Motion Light On
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.desk_motion_presence
+    to:
+    - 'on'
+  conditions: []
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    target:
+      entity_id: light.h6056
+    data: {}
+  mode: single
+- id: '1766002555205'
+  alias: Desk Motion Light Off
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.desk_motion_presence
+    to:
+    - 'off'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  conditions: []
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    target:
+      entity_id: light.h6056
+    data: {}
+  mode: single

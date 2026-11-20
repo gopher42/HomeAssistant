@@ -1,0 +1,4 @@
+# UI dashboard 'map' exported from .storage/lovelace.map
+# (read-only reference; paste into the dashboard's Raw configuration editor to restore)
+strategy:
+  type: map

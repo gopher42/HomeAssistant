@@ -1,0 +1,35 @@
+# Never commit credentials or private state
+secrets.yaml
+secret.yaml
+*.pem
+*.key
+.storage/
+.cloud/
+.ssh/
+known_devices.yaml
+zigbee2mqtt/coordinator_backup.json
+zigbee2mqtt/database.db*
+zigbee2mqtt/state.json
+zigbee2mqtt/configuration_backup_*.yaml
+esphome/.device-builder*
+esphome/.esphome/
+
+# Databases, logs, runtime files
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.log.*
+log/
+.HA_RUN*
+.ha_run.lock
+tts/
+deps/
+__pycache__/
+
+# Backups and downloaded third-party code (restored by HACS / add-ons)
+backups/
+*.tar
+*.tar.gz
+www/community/
+custom_components/
