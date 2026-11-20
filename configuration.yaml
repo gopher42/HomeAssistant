@@ -12,13 +12,17 @@ scene: !include scenes.yaml
 frontend:
   themes: !include_dir_merge_named themes
 
-# Calculate Remaining Power
 template:
+  # Upstairs minus family room temperature
   - sensor:
-      name: Temperature Difference
-      unit_of_measurement: 'F'
-      state: > 
-         {{ '%0.1f' | format (states('sensor.upstairs_temperature', rounded=True) | float - states('sensor.family_room_temperature', rounded=True) | float)}}
+      - name: Temperature Difference
+        unique_id: temperature_difference
+        unit_of_measurement: 'F'
+        state_class: measurement
+        availability: >
+          {{ has_value('sensor.upstairs_temperature') and has_value('sensor.family_room_temperature') }}
+        state: >
+          {{ (states('sensor.upstairs_temperature') | float - states('sensor.family_room_temperature') | float) | round(1) }}
 
 
   - cover:
@@ -55,44 +59,52 @@ mqtt:
   sensor:
   - state_topic: "plates"
     name: "Plates"
-    
+    unique_id: plates
+
   - name: "Plate ID"
+    unique_id: plate_id
     state_topic: "plates"
     value_template: "{{ value_json.plate }}"
 
   binary_sensor:
   - state_topic: "blue_iris/binary_sensor/fys_motion/state"
     name: "Front Yard South Motion"
+    unique_id: blue_iris_fys_motion
     payload_on: "ON"
     payload_off: "OFF"
     off_delay: 30
     device_class: motion
   - state_topic: "blue_iris/binary_sensor/bys_motion/state"
     name: "Back Yard South Motion"
+    unique_id: blue_iris_bys_motion
     payload_on: "ON"
     payload_off: "OFF"
     off_delay: 30
     device_class: motion
   - state_topic: blue_iris/binary_sensor/basement_motion/state
     name: "Basement Motion"
+    unique_id: blue_iris_basement_motion
     payload_on: "ON"
     payload_off: "OFF"
     device_class: motion
     off_delay: 30
   - state_topic: blue_iris/binary_sensor/garage_motion/state
     name: "Garage Motion"
+    unique_id: blue_iris_garage_motion
     payload_on: "ON"
     payload_off: "OFF"
     device_class: motion
     off_delay: 30
   - state_topic: blue_iris/binary_sensor/fyn_motion/state
     name: "Front Yard North Motion"
+    unique_id: blue_iris_fyn_motion
     payload_on: "ON"
     payload_off: "OFF"
     device_class: motion
     off_delay: 30
   - state_topic: blue_iris/binary_sensor/byn_motion/state
     name: "Back Yard North Motion"
+    unique_id: blue_iris_byn_motion
     payload_on: "ON"
     payload_off: "OFF"
     device_class: motion
