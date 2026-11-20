@@ -199,12 +199,12 @@
       - Wipe Random
       supported_color_modes:
       - rgb
-      color_mode: null
-      brightness: null
-      hs_color: null
-      rgb_color: null
-      xy_color: null
-      effect: null
+      color_mode:
+      brightness:
+      hs_color:
+      rgb_color:
+      xy_color:
+      effect:
       icon: mdi:led-strip-variant
       friendly_name: WLED_DigQuad
       supported_features: 36

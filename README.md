@@ -38,3 +38,21 @@ Custom integrations (HACS): `sonoff`, `meross_lan`, `meross_cloud`, `reolink_dev
 Frontend (HACS): `mushroom`, `mini-graph-card`.
 Add-ons: Samba share, Zigbee2MQTT, Mosquitto broker, Terminal & SSH, File editor, Google Drive Backup,
 ESPHome Device Builder, AirSonos, AirCast, Matter Server.
+
+## Weekly sync
+
+`tools/sync_config.py` refreshes this repo from the live instance: it creates a
+small (~3 MB, no database) partial backup named **"git-sync (temporary)"**
+through the HA API, downloads it, and copies a sanitized subset of `/config`
+here. It aborts without changing anything if any value from the instance's
+secrets files would end up in the repo. A scheduled Claude task runs it every
+week and commits any changes.
+
+The API does not allow deleting backups, so delete old "git-sync (temporary)"
+backups now and then under Settings → System → Backups.
+
+```bash
+HA_URL=https://<your-instance>.ui.nabu.casa HA_TOKEN=<long-lived token> python3 tools/sync_config.py
+```
+
+`proposals/` holds changes that are prepared but not yet applied on the host.
