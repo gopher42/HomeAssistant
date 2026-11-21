@@ -35,8 +35,7 @@
   initial_state: true
 - id: '1565684208376'
   alias: Vacation Mode Family Room Light
-  description: Turns on a family room light at a random time after sunrise while on
-    vacation.
+  description: Turns on a family room light at a random time after sunrise while on vacation.
   triggers:
   - trigger: sun
     event: sunrise
@@ -206,8 +205,7 @@
   mode: single
 - id: '1680921871271'
   alias: Johns Lamp Toggle
-  description: Aqara button "Johns Lamp Switch" toggles John's lamp (Zigbee2MQTT 2.x
-    action via MQTT).
+  description: Aqara button "Johns Lamp Switch" toggles John's lamp (Zigbee2MQTT 2.x action via MQTT).
   triggers:
   - trigger: mqtt
     topic: zigbee2mqtt/Johns Lamp Switch
@@ -274,33 +272,36 @@
   mode: single
 - id: '1690930372304'
   alias: Attic fans
-  description: ''
-  trigger:
-  - platform: time
-    at: '14:00:00'
-  - platform: time
-    at: '15:00:00'
-  - platform: time
-    at: '18:00:00'
-  condition: []
-  action:
-  - service: switch.turn_on
-    data: {}
+  description: Run both attic fans for 15 minutes at 14:00, 15:00 and 18:00, June 1 - September 15 only.
+  triggers:
+  - at: '14:00:00'
+    trigger: time
+  - at: '15:00:00'
+    trigger: time
+  - at: '18:00:00'
+    trigger: time
+  conditions:
+  - condition: template
+    alias: 'Summer: June 1 - September 15'
+    value_template: '{% set md = (now().month, now().day) %}{{ (6, 1) <= md <= (9, 15) }}'
+  actions:
+  - data: {}
     target:
       entity_id:
       - switch.shelly1_8caab5c51075
       - switch.bedroom_attic_fan
+    action: switch.turn_on
   - delay:
       hours: 0
       minutes: 15
       seconds: 0
       milliseconds: 0
-  - service: switch.turn_off
-    data: {}
+  - data: {}
     target:
       entity_id:
       - switch.shelly1_8caab5c51075
       - switch.bedroom_attic_fan
+    action: switch.turn_off
   mode: single
 - id: '1700868756973'
   alias: Christmas Turn Off
@@ -403,8 +404,7 @@
   mode: queued
 - id: living_room_lamp_random
   alias: Living Room Lamp Random
-  description: Turn the living room lamp on before sunset and off after 23:00, each
-    at a random delay.
+  description: Turn the living room lamp on before sunset and off after 23:00, each at a random delay.
   triggers:
   - trigger: sun
     event: sunset
@@ -443,8 +443,7 @@
   mode: queued
 - id: master_bathroom_lighting
   alias: Master Bathroom Lighting
-  description: Occupancy-controlled master bathroom light with fades (off after 2
-    minutes clear).
+  description: Occupancy-controlled master bathroom light with fades (off after 2 minutes clear).
   triggers:
   - trigger: state
     entity_id: binary_sensor.master_bathroom_occupancy
@@ -522,8 +521,7 @@
   mode: queued
 - id: master_bedroom_remote
   alias: Master Bedroom Remote
-  description: Hue dimmer "Master Remote" - On toggles the master lamps, Off turns
-    them off (Zigbee2MQTT 2.x action via MQTT).
+  description: Hue dimmer "Master Remote" - On toggles the master lamps, Off turns them off (Zigbee2MQTT 2.x action via MQTT).
   triggers:
   - trigger: mqtt
     topic: zigbee2mqtt/Master Remote
@@ -555,8 +553,8 @@
   mode: queued
 - id: kitchen_main_lighting
   alias: Kitchen Main Lighting
-  description: Kitchen lights follow occupancy - night mode (21:00-05:00) uses accent
-    lights only; all off after 2 minutes clear.
+  description: Kitchen lights follow occupancy - night mode (21:00-05:00) uses accent lights only; all off after 2 minutes
+    clear.
   triggers:
   - trigger: state
     entity_id: binary_sensor.kitchen_motion_occupancy
@@ -625,8 +623,7 @@
   mode: queued
 - id: vacation_mode_alerts
   alias: Vacation Mode Alerts
-  description: While vacation mode is on, notify Sam's iPhone about doors opening
-    and motion inside.
+  description: While vacation mode is on, notify Sam's iPhone about doors opening and motion inside.
   triggers:
   - trigger: state
     entity_id: binary_sensor.front_door_contact
@@ -682,8 +679,7 @@
   mode: queued
 - id: low_battery_alert
   alias: Low Battery Alert
-  description: Saturday 10:00 - list every battery sensor below 20% (phones and tablets
-    excluded).
+  description: Saturday 10:00 - list every battery sensor below 20% (phones and tablets excluded).
   triggers:
   - trigger: time
     at: '10:00:00'
@@ -698,16 +694,14 @@
       title: Batteries to replace
       message: '{{ low | join(", ") }}'
   variables:
-    low: "{% set ns = namespace(l=[]) %} {% for s in states.sensor | selectattr('attributes.device_class',
-      'defined')\n     | selectattr('attributes.device_class', 'eq', 'battery') %}\n
-      \ {% if s.state | is_number and s.state | float < 20\n        and not s.entity_id
-      is search('iphone|ipad|phone|watch') %}\n    {% set ns.l = ns.l + [s.name ~
-      ' (' ~ s.state | int ~ '%)'] %}\n  {% endif %}\n{% endfor %} {{ ns.l }}"
+    low: "{% set ns = namespace(l=[]) %} {% for s in states.sensor | selectattr('attributes.device_class', 'defined')\n  \
+      \   | selectattr('attributes.device_class', 'eq', 'battery') %}\n  {% if s.state | is_number and s.state | float < 20\n\
+      \        and not s.entity_id is search('iphone|ipad|phone|watch') %}\n    {% set ns.l = ns.l + [s.name ~ ' (' ~ s.state\
+      \ | int ~ '%)'] %}\n  {% endif %}\n{% endfor %} {{ ns.l }}"
   mode: single
 - id: critical_device_offline_alert
   alias: Critical Device Offline Alert
-  description: Notify when a security or safety device has been unavailable for 30
-    minutes.
+  description: Notify when a security or safety device has been unavailable for 30 minutes.
   triggers:
   - trigger: state
     entity_id:
