@@ -157,7 +157,7 @@ binary_sensor:
 # DFPlayer Mini configuration to play MP3
 uart:
   id: uart_bus
-  rx_pin: D8  # RX Pin (D1 Mini)
+  rx_pin: D4  # RX Pin (D1 Mini). Not D8: GPIO15 must be low at boot and the DFPlayer TX idles high
   tx_pin: D1  # TX Pin (D1 Mini)
   baud_rate: 9600
 
