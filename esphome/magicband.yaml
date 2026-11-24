@@ -138,10 +138,15 @@ binary_sensor:
     name: "RC522 RFID Tag"
     on_press:
       then:
+        # Both partitions start the white scan together
         - light.turn_on:
             id: light2
-            effect: "Green Scan"  # Trigger the Green Scan effect
-            brightness: 100%  # No need for separate RGB values when using effects
+            effect: "Green Scan"  # the effect's name; it actually sweeps white
+            brightness: 100%
+        - light.turn_on:
+            id: light3
+            effect: "Green Scan"
+            brightness: 100%
         - dfplayer.play_folder:
             folder: 1
             file: 1
@@ -149,6 +154,7 @@ binary_sensor:
         # Both partitions go solid green together
         - light.turn_on:
             id: light3
+            effect: None
             brightness: 100%
             red: 0
             green: 1.0
@@ -189,7 +195,7 @@ light:
   - platform: partition
     id: light2
     name: "Partition Light 1"
-    effects:
+    effects: &scan_effects
       # - addressable_scan:
       # - addressable_scan:
       #     name: Scan Effect With Custom Values
@@ -244,6 +250,7 @@ light:
   - platform: partition
     name: "Partition Light 2"
     id: light3
+    effects: *scan_effects  # same white scan as Partition Light 1
     segments:
       - id: light1
         from: 0
