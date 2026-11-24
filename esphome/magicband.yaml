@@ -121,6 +121,7 @@ spi:
   
 rc522_spi:
   cs_pin: D2
+  data_rate: 1MHz  # default 4MHz gave no replies from the MFRC522 over jumper wires
   update_interval: 1s
   on_tag:
     then:
