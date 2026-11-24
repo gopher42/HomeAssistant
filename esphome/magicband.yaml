@@ -182,7 +182,6 @@ dfplayer:
   uart_id: uart_bus  
 
 light:
-  # Define the full light (source) controlling all 60 LEDs
   - platform: neopixelbus
     type: GRB
     variant: WS2812
@@ -191,47 +190,12 @@ light:
     name: "Full NeoPixel Strip"
     id: light1
 
-  # First segment (LEDs 0-29)
   - platform: partition
     id: light2
     name: "Partition Light 1"
     effects:
-      # - addressable_scan:
-      # - addressable_scan:
-      #     name: Scan Effect With Custom Values
-      #     move_interval: 20ms
-      #     scan_width: 3
       - addressable_lambda:
-          name: "Green Scan"  # sweeps white; name kept so existing calls still work
-          update_interval: 20ms
-          lambda: |-
-            // One full lap in a fixed time, whatever the ring's length,
-            // so both rings finish before the sequence turns them green at 1 s.
-            const uint32_t lap_ms = 900;  // time for one lap
-            const int width = 5;          // LEDs lit at once
-            static uint32_t start = 0;
-            if (initial_run) {
-              start = millis();
-            }
-            const int n = it.size();
-            const uint32_t elapsed = (millis() - start) % lap_ms;
-            const int head = elapsed * n / lap_ms;  // 0 .. n-1
-            it.all() = Color::BLACK;
-            for (int k = 0; k < width; k++) {
-              it[(head - k + n) % n] = Color(255, 255, 255);  // tail wraps around the ring
-            }
-    segments:
-      - id: light1
-        from: 75
-        to: 107
-
-  # Second segment (LEDs 30-59)
-  - platform: partition
-    name: "Partition Light 2"
-    id: light3
-    effects:
-      - addressable_lambda:
-          name: "Green Scan"  # same scan as Partition Light 1, started half a lap ahead
+          name: "Green Scan"
           update_interval: 20ms
           lambda: |-
             const uint32_t lap_ms = 900;  // time for one lap
@@ -244,6 +208,32 @@ light:
             const int offset = n / 2;     // start 180 degrees around from the inner ring
             const uint32_t elapsed = (millis() - start) % lap_ms;
             const int head = (elapsed * n / lap_ms + offset) % n;
+            it.all() = Color::BLACK;
+            for (int k = 0; k < width; k++) {
+              it[(head - k + n) % n] = Color(255, 255, 255);  // tail wraps around the ring
+            }
+    segments:
+      - id: light1
+        from: 75
+        to: 107
+
+  - platform: partition
+    name: "Partition Light 2"
+    id: light3
+    effects:
+      - addressable_lambda:
+          name: "Green Scan"
+          update_interval: 20ms
+          lambda: |-
+            const uint32_t lap_ms = 900;  // time for one lap
+            const int width = 5;          // LEDs lit at once
+            static uint32_t start = 0;
+            if (initial_run) {
+              start = millis();
+            }
+            const int n = it.size();
+            const uint32_t elapsed = (millis() - start) % lap_ms;
+            const int head = elapsed * n / lap_ms;  // 0 .. n-1
             it.all() = Color::BLACK;
             for (int k = 0; k < width; k++) {
               it[(head - k + n) % n] = Color(255, 255, 255);  // tail wraps around the ring
