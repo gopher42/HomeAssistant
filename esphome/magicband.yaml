@@ -195,7 +195,7 @@ light:
   - platform: partition
     id: light2
     name: "Partition Light 1"
-    effects: &scan_effects
+    effects:
       # - addressable_scan:
       # - addressable_scan:
       #     name: Scan Effect With Custom Values
@@ -229,7 +229,25 @@ light:
   - platform: partition
     name: "Partition Light 2"
     id: light3
-    effects: *scan_effects  # same white scan as Partition Light 1
+    effects:
+      - addressable_lambda:
+          name: "Green Scan"  # same scan as Partition Light 1, started half a lap ahead
+          update_interval: 20ms
+          lambda: |-
+            const uint32_t lap_ms = 900;  // time for one lap
+            const int width = 5;          // LEDs lit at once
+            static uint32_t start = 0;
+            if (initial_run) {
+              start = millis();
+            }
+            const int n = it.size();
+            const int offset = n / 2;     // start 180 degrees around from the inner ring
+            const uint32_t elapsed = (millis() - start) % lap_ms;
+            const int head = (elapsed * n / lap_ms + offset) % n;
+            it.all() = Color::BLACK;
+            for (int k = 0; k < width; k++) {
+              it[(head - k + n) % n] = Color(255, 255, 255);  // tail wraps around the ring
+            }
     segments:
       - id: light1
         from: 0
