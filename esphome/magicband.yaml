@@ -5,7 +5,7 @@ esphome:
     priority: -100
     then:
       - delay: 3s  # let the DFPlayer finish starting up
-      - dfplayer.set_volume: 15  # higher volumes distort on this speaker
+      - dfplayer.set_volume: 20  # higher volumes distort on this speaker
 
 esp8266:
   board: d1_mini
