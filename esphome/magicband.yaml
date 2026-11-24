@@ -127,7 +127,7 @@ spi:
 rc522_spi:
   cs_pin: D2
   data_rate: 1MHz  # slower than the 4MHz default; more tolerant of long jumper wires
-  update_interval: 1s
+  update_interval: 250ms  # scan 4x a second so brief taps are not missed
   on_tag:
     then:
       - homeassistant.tag_scanned: !lambda 'return x;'
