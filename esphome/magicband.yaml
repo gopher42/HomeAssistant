@@ -147,6 +147,13 @@ binary_sensor:
       then:
         - script.execute: magic_show
 
+  - platform: rc522
+    uid: 04-A4-31-32-22-1D-90
+    name: "Third MagicBand"
+    on_press:
+      then:
+        - script.execute: magic_show
+
 # The light and sound show, shared by every band.
 # mode: single ignores a new tap while the show is still running.
 script:
