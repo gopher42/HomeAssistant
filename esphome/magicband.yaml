@@ -202,44 +202,23 @@ light:
       #     move_interval: 20ms
       #     scan_width: 3
       - addressable_lambda:
-          name: "Green Scan"
-          update_interval: 25ms
+          name: "Green Scan"  # sweeps white; name kept so existing calls still work
+          update_interval: 20ms
           lambda: |-
-            static int step = 0;
-            static int num_leds_on = 1;  // Start with 1 LED on
-            static int last_step = -1;   // To track the previous step
-
-            // Initialize the scan on first run
+            // One full lap in a fixed time, whatever the ring's length,
+            // so both rings finish before the sequence turns them green at 1 s.
+            const uint32_t lap_ms = 900;  // time for one lap
+            const int width = 5;          // LEDs lit at once
+            static uint32_t start = 0;
             if (initial_run) {
-              step = 0;
-              num_leds_on = 1;  // Start with 1 LED
-              last_step = -1;
+              start = millis();
             }
-
-            // Turn off the previous block's LEDs
-            if (last_step >= 0) {
-              for (int i = last_step; i < last_step + num_leds_on; i++) {
-                if (i < it.size()) {
-                  it[i] = Color(0, 0, 0);  // Turn off the previous LEDs (BLACK)
-                }
-              }
-            }
-
-            // Set the current block of LEDs to green
-            for (int i = step; i < step + num_leds_on; i++) {
-              if (i < it.size()) {
-                it[i] = Color(255, 255, 255);  // Set to green
-              }
-            }
-
-            // Update last_step and increment the step
-            last_step = step;
-            step = step + 1;
-
-            // After moving through the strip, reset to 0 and increase num_leds_on
-            if (step >= it.size()) {
-              step = 0;  // Wrap around to the start
-              num_leds_on = (num_leds_on % 3) + 1;  // Cycle through 1, 2, 3 LEDs on
+            const int n = it.size();
+            const uint32_t elapsed = (millis() - start) % lap_ms;
+            const int head = elapsed * n / lap_ms;  // 0 .. n-1
+            it.all() = Color::BLACK;
+            for (int k = 0; k < width; k++) {
+              it[(head - k + n) % n] = Color(255, 255, 255);  // tail wraps around the ring
             }
     segments:
       - id: light1
